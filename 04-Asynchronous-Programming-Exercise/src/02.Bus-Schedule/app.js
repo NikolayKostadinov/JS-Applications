@@ -1,5 +1,5 @@
 function solve() {
-
+    const baseUrl = 'http://localhost:3030/jsonstore/bus/schedule/';
     function depart() {
         console.log('Depart TODO...');
     }
