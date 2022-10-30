@@ -5,13 +5,13 @@ async function attachEvents() {
     const commentsList = document.getElementById('post-comments');
 
     document.getElementById('btnLoadPosts')
-        .addEventListener('click', loadPosts);
+        .addEventListener('click', loadPostsHandler);
 
     document.getElementById('btnViewPost')
-        .addEventListener('click', loadPostDetails)
+        .addEventListener('click', loadPostDetailsHandler)
 
-    await loadPosts();
-    await loadPostDetails();
+    await loadPostsHandler();
+    await loadPostDetailsHandler();
 
     function displayPost(post) {
         postTitle.textContent = post.title;
@@ -21,18 +21,16 @@ async function attachEvents() {
     function displayComments(comments) {
         commentsList.innerHTML = '';
         comments.map(c => {
-            commentsList.appendChild(
-                ce('li', {id: c.id}, c.text));
+            commentsList.appendChild(ce('li', {id: c.id}, c.text));
         })
     }
 
-    async function loadPostDetails() {
+    async function loadPostDetailsHandler() {
         try {
             const posts = loadData('http://localhost:3030/jsonstore/blog/posts/');
             const postDetails = loadData('http://localhost:3030/jsonstore/blog/comments');
             let postId = postsSelect.value;
             let title = postsSelect.options[postsSelect.selectedIndex].text;
-
 
             Promise.all([posts, postDetails])
                 .then(([posts, data]) => {
@@ -47,13 +45,12 @@ async function attachEvents() {
         }
     }
 
-
-    async function loadPosts() {
+    async function loadPostsHandler() {
         const data = await loadData('http://localhost:3030/jsonstore/blog/posts');
         postsSelect.innerHTML = '';
         Object.entries(data)
-            .forEach(([key, post]) =>
-                ce('option', {text: post.title, value: key}));
+            .forEach(([key, post]) => postsSelect.appendChild(
+                ce('option', {text: post.title, value: key})));
     }
 }
 
