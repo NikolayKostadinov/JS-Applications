@@ -2,15 +2,17 @@ document.querySelector('form').addEventListener('submit', onSubmit);
 
 function isValid(data) {
     if (data.email === '') {
-        document.querySelector('[name="email"]').classList.add('error');
+        document.querySelector('[name="email"]').parentElement.classList.add('error');
     } else {
-        document.querySelector('[name="email"]').classList.remove('error');
+        document.querySelector('[name="email"]').parentElement.classList.remove('error');
     }
 
     if (data.password === '') {
-        document.querySelector('[name="password"]').classList.add('error');
+        document.querySelector('[name="password"]')
+            .parentElement.classList.add('error');
     } else {
-        document.querySelector('[name="password"]').classList.remove('error');
+        document.querySelector('[name="password"]')
+            .parentElement.classList.remove('error');
     }
 
     return data.email !== '' && data.password !== '';
