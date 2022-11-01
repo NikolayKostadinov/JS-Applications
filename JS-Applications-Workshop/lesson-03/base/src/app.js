@@ -9,9 +9,9 @@ async function getRecipeById(id) {
 }
 
 function createRecipePreview(recipe) {
-    const result = e('article', { className: 'preview', onClick: toggleCard },
-        e('div', { className: 'title' }, e('h2', {}, recipe.name)),
-        e('div', { className: 'small' }, e('img', { src: recipe.img })),
+    const result = e('article', {className: 'preview', onClick: toggleCard},
+        e('div', {className: 'title'}, e('h2', {}, recipe.name)),
+        e('div', {className: 'small'}, e('img', {src: recipe.img})),
     );
 
     return result;
@@ -26,14 +26,14 @@ function createRecipePreview(recipe) {
 function createRecipeCard(recipe) {
     const result = e('article', {},
         e('h2', {}, recipe.name),
-        e('div', { className: 'band' },
-            e('div', { className: 'thumb' }, e('img', { src: recipe.img })),
-            e('div', { className: 'ingredients' },
+        e('div', {className: 'band'},
+            e('div', {className: 'thumb'}, e('img', {src: recipe.img})),
+            e('div', {className: 'ingredients'},
                 e('h3', {}, 'Ingredients:'),
                 e('ul', {}, recipe.ingredients.map(i => e('li', {}, i))),
             )
         ),
-        e('div', { className: 'description' },
+        e('div', {className: 'description'},
             e('h3', {}, 'Preparation:'),
             recipe.steps.map(s => e('p', {}, s))
         ),
@@ -51,22 +51,39 @@ window.addEventListener('load', async () => {
     main.innerHTML = '';
     cards.forEach(c => main.appendChild(c));
 
-    if (isAuthenticated()){
-        document.getElementById('user').style.display= 'inline-block';
-        document.getElementById('guest').style.display= 'none';
-        document.getElementById('logoutBtn').addEventListener('click', logoutHandler());
+    if (isAuthenticated()) {
+        document.getElementById('user').style.display = 'inline-block';
+        document.getElementById('guest').style.display = 'none';
+        document.getElementById('logoutBtn').addEventListener('click', logoutHandler);
+    } else {
+        document.getElementById('user').style.display = 'none';
+        document.getElementById('guest').style.display = 'inline-block';
     }
 });
 
-function logoutHandler() {
-    return () => {
+async function logoutHandler() {
+    try {
+        const response = await fetch('http://localhost:3030/users/logout',
+            {
+                method: "GET",
+                headers: {
+                    'X-Authorization': sessionStorage.getItem('accessToken')
+                }
+            });
+        if (!response.ok) {
+            const err = response.json();
+            throw new Error(err.message);
+        }
+
         sessionStorage.removeItem('accessToken');
         document.getElementById('user').style.display = 'none';
         document.getElementById('guest').style.display = 'inline-block';
-    };
+    } catch (err) {
+        alert(err.message);
+    }
 }
 
-function isAuthenticated(){
+function isAuthenticated() {
     const token = sessionStorage.getItem('accessToken');
     return token !== null;
 }
