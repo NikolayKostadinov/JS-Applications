@@ -4,7 +4,6 @@ const titleEl = document.querySelector('input[name="title"]');
 const form = document.querySelector('form')
 document.getElementById('loadBooks').addEventListener('click', loadBooks);
 form.addEventListener('submit', submitBook);
-
 window.addEventListener('load', loadBooks);
 
 async function loadBooks() {
@@ -24,17 +23,23 @@ async function loadBooks() {
     }
 }
 
-function createCommands(id) {
+function createCommandsCell(id, title, author) {
     const editBtn = document.createElement('button');
     editBtn.textContent = 'Edit';
     editBtn.dataset.id = id;
+    editBtn.dataset.title = title;
+    editBtn.dataset.author = author;
     editBtn.addEventListener('click', onEdit);
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
     deleteBtn.dataset.id = id;
     deleteBtn.addEventListener('click', onDelete);
-    return [editBtn, deleteBtn];
+
+    const cell = document.createElement('td');
+    cell.appendChild(editBtn);
+    cell.appendChild(deleteBtn);
+    return cell;
 }
 
 function createBook(data) {
@@ -42,7 +47,7 @@ function createBook(data) {
     const tr = document.createElement('tr');
     tr.appendChild(createCell(title));
     tr.appendChild(createCell(author));
-    tr.append(...createCommands(id));
+    tr.appendChild(createCommandsCell(id, title, author));
     return tr;
 }
 
@@ -53,79 +58,67 @@ function createCell(data) {
 }
 
 async function onEdit(ev) {
-    const id = ev.target.dataset.id;
-    try {
-        const response = await fetch(baseUrl + '/' + id);
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message);
-        }
-
-        authorEl.value = data.author;
-        titleEl.value = data.title;
-        form.querySelector('h3').textContent = "Edit FORM";
-        form.dataset.id = id;
-        form.dataset.edit = 'true';
-    } catch (err) {
-        alert(err.message);
-    }
+    authorEl.value = ev.target.dataset.author;
+    titleEl.value = ev.target.dataset.title;
+    form.querySelector('h3').textContent = "Edit FORM";
+    form.querySelector('button').textContent = "Save";
+    form.dataset.id = ev.target.dataset.id;
+    form.dataset.edit = 'true';
 }
 
 async function onDelete(ev) {
     ev.preventDefault();
     try {
-        const response = await fetch(baseUrl + `/${ev.target.dataset.id}`, {method: "DELETE"});
+        const response = await fetch(baseUrl + `/${ev.target.classT}`, {method: "DELETE"});
         const data = await response.json();
         if (!response.ok) {
             throw new Error(data.message);
         }
 
-        await loadBooks();
+        ev.target.parentElement.parentElement.remove();
     } catch (err) {
         alert(err.message);
     }
 }
 
-    async function submitBook(ev) {
-        ev.preventDefault();
-        const formData = new FormData(ev.target);
-        const author = formData.get('author');
-        const title = formData.get('title');
-        let url = baseUrl;
+async function submitBook(ev) {
+    ev.preventDefault();
+    const formData = new FormData(ev.target);
+    const {title, author} = Object.fromEntries(formData);
 
-        let method = "POST";
+    let url = baseUrl;
+    let method = "POST";
 
-        if (!(author && title)) return;
+    if (author === '' || title === '') return;
 
-        const inputData = {author, title};
-        if (ev.target.dataset.edit) {
-            method = "PUT";
-            url += '/' + ev.target.dataset.id;
-        }
-        try {
-            const request = await fetch(url,
-                {
-                    method: method,
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(inputData)
-                });
-
-            const data = await request.json();
-            if (!request.ok) {
-                throw new Error(data.message);
-            }
-
-
-            authorEl.value = '';
-            titleEl.value = '';
-            form.querySelector('h3').textContent = "FORM";
-            form.dataset.id = '';
-            form.dataset.edit = '';
-
-            await loadBooks();
-        } catch (err) {
-            alert(err);
-        }
+    if (ev.target.dataset.edit) {
+        method = "PUT";
+        url += '/' + ev.target.dataset.id;
     }
+    try {
+        const request = await fetch(url,
+            {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({author, title})
+            });
+
+        const data = await request.json();
+        if (!request.ok) {
+            throw new Error(data.message);
+        }
+
+        authorEl.value = '';
+        titleEl.value = '';
+        form.querySelector('h3').textContent = "FORM";
+        form.querySelector('button').textContent = "Submit";
+        form.dataset.id = '';
+        form.dataset.edit = '';
+
+        await loadBooks();
+    } catch (err) {
+        alert(err);
+    }
+}

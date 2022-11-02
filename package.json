@@ -2,5 +2,9 @@
   "dependencies": {
     "chai": "^4.3.6",
     "playwright-chromium": "^1.27.1"
-  }
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.27.1"
+  },
+  "scripts": {}
 }
