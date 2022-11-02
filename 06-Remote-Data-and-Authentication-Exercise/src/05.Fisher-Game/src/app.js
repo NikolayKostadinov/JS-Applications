@@ -5,7 +5,6 @@ window.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.load').addEventListener('click', onLoad);
     document.getElementById('addForm').addEventListener('submit', onAdd);
     document.getElementById('catches').addEventListener('click', onCaches);
-    document.getElementById('catches').innerHTML = '';
 })
 
 function toggleUserGuest() {
