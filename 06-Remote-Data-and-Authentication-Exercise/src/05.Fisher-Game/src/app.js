@@ -1,24 +1,30 @@
-const userData = JSON.parse(sessionStorage.getItem("userData"));
-window.addEventListener('DOMContentLoaded', () => {
-    toggleUserGuest();
+let userData = null;
+window.addEventListener('DOMContentLoaded', async () => {
+    userData = JSON.parse(sessionStorage.getItem("userData"));
+
+    const catches = document.getElementById('catches');
+    catches.innerHTML = '';
+
+    await toggleUserGuest();
+
     document.getElementById('logout').addEventListener('click', onLogout);
     document.querySelector('.load').addEventListener('click', onLoad);
     document.getElementById('addForm').addEventListener('submit', onAdd);
-    document.getElementById('catches').addEventListener('click', onCaches);
+    catches.addEventListener('click', onCaches);
 })
 
-function toggleUserGuest() {
+async function toggleUserGuest() {
     const user = document.getElementById('user');
     const guest = document.getElementById('guest');
     const addBtn = document.querySelector('.add');
     const greetingName = document.querySelector('p.email span');
-    const userData = JSON.parse(sessionStorage.getItem('userData'));
 
     if (userData) {
         user.style.display = 'inline-block';
         guest.style.display = 'none';
         greetingName.textContent = userData.email;
         addBtn.disabled = false;
+        await onLoad();
     } else {
         user.style.display = 'none';
         guest.style.display = 'inline-block';
@@ -28,12 +34,12 @@ function toggleUserGuest() {
 }
 
 async function onLogout() {
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
+
     try {
-        const response = await fetch('http://localhost:3030/users/logout',
-            {
-                method: "GET",
-                headers: {'X-Authorization': userData.accessToken}
-            });
+        const response = await fetch('http://localhost:3030/users/logout', {
+            method: "GET", headers: {'X-Authorization': userData.accessToken}
+        });
 
         if (!response.ok) {
             const data = await response.json();
@@ -50,11 +56,7 @@ async function onLogout() {
 
 async function onLoad() {
     try {
-        const response = await fetch('http://localhost:3030/data/catches',
-            {
-                method: 'GET',
-                headers: {'X-Authorization': userData.accessToken}
-            })
+        const response = await fetch('http://localhost:3030/data/catches')
 
         const data = await response.json();
         if (!response.ok) {
@@ -79,29 +81,17 @@ function createCatch(data) {
 
     const html = `
 	<label>Angler</label>
-	<input type="text" class="angler" value="${data.angler}" ${
-        !isOwner ? 'disabled' : ''
-    }>
+	<input type="text" class="angler" value="${data.angler}" ${!isOwner ? 'disabled' : ''}>
 	<label>Weight</label>
-	<input type="text" class="weight" value="${data.weight}" ${
-        !isOwner ? 'disabled' : ''
-    }>
+	<input type="text" class="weight" value="${data.weight}" ${!isOwner ? 'disabled' : ''}>
 	<label>Species</label>
-	<input type="text" class="species" value="${data.species}" ${
-        !isOwner ? 'disabled' : ''
-    }>
+	<input type="text" class="species" value="${data.species}" ${!isOwner ? 'disabled' : ''}>
 	<label>Location</label>
-	<input type="text" class="location" value="${data.location}" ${
-        !isOwner ? 'disabled' : ''
-    }>
+	<input type="text" class="location" value="${data.location}" ${!isOwner ? 'disabled' : ''}>
 	<label>Bait</label>
-	<input type="text" class="bait" value="${data.bait}" ${
-        !isOwner ? 'disabled' : ''
-    }>
+	<input type="text" class="bait" value="${data.bait}" ${!isOwner ? 'disabled' : ''}>
 	<label>Capture Time</label>
-	<input type="number" class="captureTime" value="${data.captureTime}" ${
-        !isOwner ? 'disabled' : ''
-    }>
+	<input type="number" class="captureTime" value="${data.captureTime}" ${!isOwner ? 'disabled' : ''}>
 	<button class="update" data-id="${data._ownerId}" ${!isOwner ? 'disabled' : ''}>
 		Update
 	</button>
@@ -114,56 +104,42 @@ function createCatch(data) {
 }
 
 async function onCaches(ev) {
-    ev.preventDefault();
+    if (ev.target.tagName !== 'BUTTON') return;
+    ev.target.className === 'update' ? await onUpdate(ev) : await onDelete(ev);
+}
 
+async function onUpdate(ev) {
     const id = ev.target.parentElement.dataset.id;
-    if (ev.target.tagName === 'BUTTON' && ev.target.className === 'update') {
+    const data = Object.fromEntries(Array.from(ev.target.parentNode.children)
+        .filter(el => el.nodeName === 'INPUT')
+        .map(el => [el.className, el.value]));
 
-        const {angler, weight, species, location, bait, captureTime} = Object.fromEntries(
-            Array.from(ev.target.parentElement.querySelectorAll("input"))
-                .map(i=>[i.className, i.value]));
-        try {
-            if (angler === '' || weight === '' || species === '' || location === '' || bait === '' || captureTime === '') {
-                throw new Error('Required fields!');
-            }
-            const response = await fetch('http://localhost:3030/data/catches/' + id,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Authorization': userData.accessToken
-                    },
-                    body: JSON.stringify({angler, weight, species, location, bait, captureTime})
-                });
-
-            const data = await response.json();
-            if (!response.ok) {
-                throw new Error(data.message);
-            }
-            console.log(data);
-        } catch (err) {
-            alert(err.message);
+    try {
+        if (Object.values(data).some(d => d === '')) {
+            throw new Error('Required fields!');
         }
-    }else if (ev.target.tagName ==='BUTTON' && ev.target.className ==='delete' ){
-        try{
-        const response = await fetch('http://localhost:3030/data/catches/' + id,
-            {
-                method: 'Delete',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Authorization': userData.accessToken
-                }
-            });
-
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message);
-        }
-        console.log(data);
-        ev.target.parentElement.remove();
+        const response = await fetch('http://localhost:3030/data/catches/' + id, {
+            method: 'PUT', headers: {
+                'Content-Type': 'application/json', 'X-Authorization': userData.accessToken
+            }, body: JSON.stringify(data)
+        });
     } catch (err) {
         alert(err.message);
     }
+}
+
+async function onDelete(ev) {
+    const id = ev.target.parentElement.dataset.id;
+
+    try {
+        ev.target.parentElement.remove();
+        const response = await fetch('http://localhost:3030/data/catches/' + id, {
+            method: 'Delete', headers: {
+                'X-Authorization': userData.accessToken
+            }
+        });
+    } catch (err) {
+        alert(err.message);
     }
 }
 
@@ -175,15 +151,11 @@ async function onAdd(ev) {
         if (angler === '' || weight === '' || species === '' || location === '' || bait === '' || captureTime === '') {
             throw new Error('Required fields!');
         }
-        const response = await fetch('http://localhost:3030/data/catches',
-            {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Authorization': userData.accessToken
-                },
-                body: JSON.stringify({angler, weight, species, location, bait, captureTime})
-            });
+        const response = await fetch('http://localhost:3030/data/catches', {
+            method: 'post', headers: {
+                'Content-Type': 'application/json', 'X-Authorization': userData.accessToken
+            }, body: JSON.stringify({angler, weight, species, location, bait, captureTime})
+        });
 
         const data = await response.json();
         if (!response.ok) {
