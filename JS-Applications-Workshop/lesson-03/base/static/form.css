@@ -43,6 +43,11 @@ input[type="submit"]:hover {
     cursor: pointer;
 }
 
-.error{
+.error input{
     border: 1px solid red;
+}
+
+.error::after {
+    content:" *";
+    color: red;
 }
