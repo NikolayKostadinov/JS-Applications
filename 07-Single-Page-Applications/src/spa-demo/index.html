@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SPA Demo</title>
+    <script src="src/app.js" type="module"></script>
+    <style>
+        #views, #guest-nav, #registered-nav {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" id="homeBth">Home</a>
+    <a href="/catalog" id="catalogBtn">Catalog</a>
+    <a href="/about" id="aboutBtn">About</a>
+    <div id="guest-nav">
+        <a href="/login" id="loginBtn">Login</a>
+        <a href="/register" id="registerBtn">Register</a>
+        <span>Welcome, Guest!</span>
+    </div>
+    <div id="registered-nav">
+        <a href="/create" id="createBtn">Create</a>
+        <a href="javascript:void(0)" id="logoutBtn">Logout</a>
+        <span id="greeting"></span>
+    </div>
+</nav>
+<h1>SPA Demo</h1>
+<main>
+</main>
+<div id="views">
+    <section id='home-view'>
+        <h2>Home</h2>
+        <p>Welcome to our site!</p>
+    </section>
+    <section id="catalog-view">
+        <h2>Catalog</h2>
+        <ul id="catalog">
+        </ul>
+    </section>
+    <section id="about-view">
+        <h2>About Us</h2>
+        <p>Phone: +359-886-630-111</p>
+    </section>
+    <section id="login-view">
+        <h2>Login</h2>
+        <form>
+            <div>
+                <label for="email">Email </label>
+                <input id="email" type="text" name="email">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password">
+            </div>
+            <div>
+                <button>Sign In</button>
+            </div>
+        </form>
+    </section>
+    <section id="register-view">
+        <h2>Register</h2>
+        <form>
+            <form>
+                <div>
+                    <label for="email">Email </label>
+                    <input id="email" type="text" name="email">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password">
+                </div>
+                <div>
+                    <label for="rePass">Password</label>
+                    <input id="rePass" type="password" name="rePass">
+                </div>
+                <div>
+                    <button>Save</button>
+                </div>
+            </form>
+        </form>
+    </section>
+    <section id="create-view">
+        <h2>Create Movie</h2>
+        <form>
+            <div>
+                <label for="title">Title </label>
+                <input id="title" type="text" name="title">
+            </div>
+            <div>
+                <button>Save</button>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>
