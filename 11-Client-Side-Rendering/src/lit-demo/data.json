@@ -2,16 +2,20 @@
   {
     "title": "First Article",
     "author": "John Smith",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus nisi fermentum imperdiet vulputate. Pellentesque tempor consequat turpis. Cras sagittis vulputate mauris nec ornare. Nullam dictum dolor sapien, ut venenatis lacus rhoncus et. Aliquam id volutpat orci, in fringilla nisl. Nam dictum dui non urna scelerisque, sit amet feugiat justo cursus. Phasellus leo sem, porta ut mi eget, pellentesque vehicula risus. Morbi bibendum posuere tortor sed imperdiet. Suspendisse vitae augue quis ex mattis vehicula. In scelerisque ultrices mi et faucibus. Vestibulum vel egestas erat. Sed elementum risus ut venenatis ultricies."
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus nisi fermentum imperdiet vulputate. Pellentesque tempor consequat turpis. Cras sagittis vulputate mauris nec ornare. Nullam dictum dolor sapien, ut venenatis lacus rhoncus et. Aliquam id volutpat orci, in fringilla nisl. Nam dictum dui non urna scelerisque, sit amet feugiat justo cursus. Phasellus leo sem, porta ut mi eget, pellentesque vehicula risus. Morbi bibendum posuere tortor sed imperdiet. Suspendisse vitae augue quis ex mattis vehicula. In scelerisque ultrices mi et faucibus. Vestibulum vel egestas erat. Sed elementum risus ut venenatis ultricies.",
+    "class": "red"
   },
   {
     "title": "Second Article",
     "author": "Henry Fort",
-    "content": "Quisque eget enim ornare, semper enim vitae, mattis libero. Donec tincidunt placerat mauris, nec rutrum quam eleifend id. In eget nibh ut mi sagittis dictum. Aenean venenatis vestibulum sapien, eleifend fermentum felis vulputate sed. Aliquam elementum nunc vel porttitor lacinia. Morbi at urna ex. Nullam et malesuada justo, vel bibendum leo. Maecenas consequat suscipit semper. Mauris mollis scelerisque tortor, quis efficitur urna tincidunt placerat. Phasellus maximus sodales urna non eleifend. Sed consectetur nisi arcu, eget pharetra mi sagittis quis. Ut a consectetur nisl. Phasellus porttitor lobortis ex, eu mattis augue gravida tristique. Ut in sem et odio lacinia venenatis vel quis purus."
+    "content": "Quisque eget enim ornare, semper enim vitae, mattis libero. Donec tincidunt placerat mauris, nec rutrum quam eleifend id. In eget nibh ut mi sagittis dictum. Aenean venenatis vestibulum sapien, eleifend fermentum felis vulputate sed. Aliquam elementum nunc vel porttitor lacinia. Morbi at urna ex. Nullam et malesuada justo, vel bibendum leo. Maecenas consequat suscipit semper. Mauris mollis scelerisque tortor, quis efficitur urna tincidunt placerat. Phasellus maximus sodales urna non eleifend. Sed consectetur nisi arcu, eget pharetra mi sagittis quis. Ut a consectetur nisl. Phasellus porttitor lobortis ex, eu mattis augue gravida tristique. Ut in sem et odio lacinia venenatis vel quis purus.",
+    "highlight": true,
+    "class": "yellow"
   },
   {
     "title": "Third Article",
     "author": "Peter Malone",
-    "content": "Integer a mauris vehicula, vehicula turpis ut, semper massa. Sed volutpat, dui ac bibendum lobortis, eros nisi posuere mauris, in congue nibh lacus nec ipsum. Praesent quis felis varius, vulputate odio eu, sagittis arcu. Praesent vehicula risus nulla, id imperdiet tortor cursus non. Maecenas iaculis mauris sit amet lacus dapibus, vel dapibus ex pellentesque. Aliquam erat volutpat. Nulla maximus elementum porta. Suspendisse purus lacus, ultrices quis hendrerit vitae, scelerisque at leo. Sed eu purus felis."
+    "content": "Integer a mauris vehicula, vehicula turpis ut, semper massa. Sed volutpat, dui ac bibendum lobortis, eros nisi posuere mauris, in congue nibh lacus nec ipsum. Praesent quis felis varius, vulputate odio eu, sagittis arcu. Praesent vehicula risus nulla, id imperdiet tortor cursus non. Maecenas iaculis mauris sit amet lacus dapibus, vel dapibus ex pellentesque. Aliquam erat volutpat. Nulla maximus elementum porta. Suspendisse purus lacus, ultrices quis hendrerit vitae, scelerisque at leo. Sed eu purus felis.",
+    "class": "green"
   }
 ]
