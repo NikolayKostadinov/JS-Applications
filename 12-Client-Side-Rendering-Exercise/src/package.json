@@ -1,0 +1,21 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ./01.Accordion -a localhost -p 3000 -P http://localhost:3000? -c-1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "http-server": "^14.1.1",
+    "lit-html": "^2.4.0",
+    "mocha": "^10.1.0",
+    "playwright": "^1.27.1",
+    "playwright-chromium": "^1.27.1"
+  }
+}
