@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !08-Single-Page-Applications-Exercise/src/03.Sample/**/build/
+*.zip
 
 ### STS ###
 .apt_generated
