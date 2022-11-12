@@ -5,6 +5,7 @@ import {showHome} from "./views/home.js";
 import {showAbout} from "./views/about.js";
 import {showCatalog} from "./views/catalog.js";
 import {showDetails} from "./views/details.js";
+import {showLogin} from "./views/login.js";
 
 const main = document.querySelector('main');
 
@@ -14,11 +15,10 @@ page('/',showHome);
 page('/catalog',showCatalog);
 page('/catalog/:recipeId', showDetails);
 page('/about', showAbout);
+page('/login', showLogin);
 page('*', notFound);
 
 page.start();
-
-
 
 function render(templateResult){
     litRender(templateResult, main);
