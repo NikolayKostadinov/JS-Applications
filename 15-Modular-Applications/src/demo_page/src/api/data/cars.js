@@ -1,4 +1,4 @@
-import * as api from './api.js';
+import * as api from '../api.js';
 
 const pageSize = '4';
 const endpoints = {

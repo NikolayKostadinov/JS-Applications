@@ -1,7 +1,7 @@
 import {html} from "../../node_modules/lit-html/lit-html.js";
 import {until} from "../../node_modules/lit-html/directives/until.js";
 import {cache} from "../../node_modules/lit-html/directives/cache.js";
-import {getCars} from "../api/cars.js";
+import {getCars} from "../api/data/cars.js";
 import {commentsView} from "./comments.js";
 
 
@@ -11,6 +11,7 @@ const detailsTemplate = (car, commentsSection) => html`
     ${commentsSection}`;
 
 let carCache = null;
+let currentCarId = null;
 
 export async function showDetails(ctx) {
     ctx.render(until(detailWrapper(ctx), 'Loading...'));
@@ -18,8 +19,9 @@ export async function showDetails(ctx) {
 
 async function detailWrapper(ctx) {
     const id = ctx.params.id;
-    if (carCache == null) {
+    if (carCache == null || id !== currentCarId) {
         carCache = await getCars(id);
+        currentCarId = id;
     }
 
     const car = carCache;

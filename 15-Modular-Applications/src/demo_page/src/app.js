@@ -6,12 +6,14 @@ import {showAbout} from "./views/about.js";
 import {showCatalog} from "./views/catalog.js";
 import {showDetails} from "./views/details.js";
 import {showLogin} from "./views/login.js";
-import {parseQueryString} from "./utils.js";
+import {parseQueryString, userSession} from "./utils.js";
+import {getUserData} from "./api/users_store.js";
 
 const main = document.querySelector('main');
 
 page(parseQueryString);
 page(decorateContext);
+page(userSession.bind(null, getUserData));
 
 page('/index.html', '/');
 page('/', showHome);

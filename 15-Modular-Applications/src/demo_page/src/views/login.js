@@ -1,5 +1,5 @@
 import {html} from "../../node_modules/lit-html/lit-html.js";
-import {login} from "../api/cars.js";
+import {login} from "../api/data/cars.js";
 import {setUserData} from "../api/users_store.js";
 
 const loginTemplate = (onLogin) => html`

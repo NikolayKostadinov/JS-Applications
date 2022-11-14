@@ -11,6 +11,11 @@ export function parseQueryString(ctx, next) {
     next();
 }
 
+export function userSession(userDataProvider, ctx, next){
+    ctx.userData = userDataProvider();
+    next();
+}
+
 export function createSubmitHandler(callback){
     return function (event) {
         event.preventDefault();

@@ -1,7 +1,7 @@
 import {html} from "../../node_modules/lit-html/lit-html.js";
 import {repeat} from "../../node_modules/lit-html/directives/repeat.js";
 import {until} from "../../node_modules/lit-html/directives/until.js";
-import {getAllCars} from "../api/cars.js";
+import {getAllCars} from "../api/data/cars.js";
 import {createSubmitHandler} from "../utils.js";
 
 const recipeTemplate = (car) => html`
