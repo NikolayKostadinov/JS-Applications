@@ -5,6 +5,8 @@ let pageSize = 2;
 let endpoints = {
     byId: '/data/recipes/',
     create: "/data/recipes",
+    update: "/data/recipes/",
+    delete: "/data/recipes/",
     count: "/data/recipes?count",
     recent: '/data/recipes?select=_id%2Cname%2Cimg&sortBy=_createdOn%20desc&pageSize=3',
     recipes: `/data/recipes?sortBy=_createdOn%20desc&pageSize=${pageSize}&offset=`,
@@ -19,8 +21,8 @@ export async function getById(id) {
 }
 
 export async function getAll(page = 1) {
-    const [ recipes, count] = await Promise.all([
-        api.get(endpoints.recipes + (page -1) * pageSize),
+    const [recipes, count] = await Promise.all([
+        api.get(endpoints.recipes + (page - 1) * pageSize),
         api.get(endpoints.count)
     ]);
 
@@ -32,4 +34,12 @@ export async function getAll(page = 1) {
 
 export async function create(data) {
     return api.post(endpoints.create, data)
+}
+
+export async function update(id, data) {
+    return api.put(endpoints.update + id, data)
+}
+
+export async function deleteRecipe(id) {
+    return api.del(endpoints.delete + id)
 }
