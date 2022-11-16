@@ -1,8 +1,8 @@
 import { render } from '../../node_modules/lit-html/lit-html.js';
 
-let root = document.querySelector('main')
+let main = document.querySelector('main')
 
-function ctxRender(context) {
+function ctxRender(context, root = main) {
     render(context, root)
 }
 

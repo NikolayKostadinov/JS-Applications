@@ -20,16 +20,21 @@ export async function getById(id) {
     return api.get(endpoints.byId + id);
 }
 
-export async function getAll(page = 1) {
+export async function getAll(search, page = 1) {
+    let dataUrl = endpoints.recipes + (page - 1) * pageSize;
+    let sizeUrl = endpoints.count;
+    if (search){
+        const searchString = '&where=' + encodeURIComponent(`name LIKE "${search}"`);
+        dataUrl += searchString;
+        sizeUrl += searchString;
+    }
     const [recipes, count] = await Promise.all([
-        api.get(endpoints.recipes + (page - 1) * pageSize),
-        api.get(endpoints.count)
-    ]);
-
+        api.get(dataUrl),
+        api.get(sizeUrl)]);
     return {
         recipes,
         pages: Math.ceil(count / pageSize)
-    }
+    };
 }
 
 export async function create(data) {
