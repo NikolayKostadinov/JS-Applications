@@ -18,7 +18,7 @@ const detailsTemplate = (meme, onDelete) => html`
 
                 ${meme._isOwner ? html`
                             <a class="button warning" href="/edit/${meme._id}">Edit</a>
-                            <button class="button danger" @click=${() => onDelete(meme._id)}>Delete</button>` :
+                            <button class="button danger" @click=${onDelete}>Delete</button>` :
                         nothing
                 }
             </div>
@@ -32,7 +32,7 @@ export function detailsPage(inCtx) {
     ctx.render(detailsTemplate(ctx.meme, onDelete));
 }
 
-async function onDelete(id) {
-    await memeRepo.del(id);
+async function onDelete() {
+    await memeRepo.del(ctx.meme._id);
     ctx.page.redirect('/memes');
 }
