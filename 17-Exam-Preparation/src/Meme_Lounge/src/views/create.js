@@ -1,7 +1,7 @@
 import {html} from "../../node_modules/lit-html/lit-html.js";
 import * as memeRepo from "../repos/memes.js";
 import {createSubmitHandler} from "../utils.js";
-import {showNotification} from "./notification.js";
+import {notify} from "../api/notification.js";
 
 const createTemplate = (onSubmit) => html`
     <section id="create-meme">
@@ -27,7 +27,7 @@ export function createPage(ctx){
 
 async function onSubmit(ctx, data, event) {
     if (Object.values(data).some(v => v === '')) {
-        showNotification('All fields are required');
+        notify('All fields are required');
         return;
     }
     await memeRepo.create(data);

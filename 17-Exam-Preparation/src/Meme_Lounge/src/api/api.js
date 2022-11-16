@@ -1,3 +1,4 @@
+import {notify} from "./notification.js";
 import {clearUserData, getUserData} from "./users_store.js";
 
 const host = 'http://localhost:3030';
@@ -36,7 +37,7 @@ async function request(method ,url, data) {
 
         return responseData;
     }catch (err){
-        alert(err.message);
+        notify(err.message);
         throw err;
     }
 }

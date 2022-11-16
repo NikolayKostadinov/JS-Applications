@@ -1,4 +1,4 @@
-import {hideNotification} from "../views/notification.js";
+import {hideNotification} from "../api/notification.js";
 
 const userLinks = document.querySelector('.user')
 const guestLinks =  document.querySelector('.guest')
@@ -29,6 +29,5 @@ export function updateNav(ctx, next) {
         userLinks.style.display = 'none';
         guestLinks.style.display = '';
     }
-    hideNotification();
     next();
 }

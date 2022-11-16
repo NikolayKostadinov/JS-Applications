@@ -1,7 +1,7 @@
 import {html} from "../../node_modules/lit-html/lit-html.js";
 import {register} from "../api/users.js";
 import {createSubmitHandler} from "../utils.js";
-import {showNotification} from "./notification.js";
+import {notify} from "../api/notification.js";
 
 const registerTemplate = (onSubmit) => html`
     <section id="register">
@@ -37,13 +37,13 @@ export function registerPage(ctx){
 
 async function onSubmit(ctx, data, event) {
     if (Object.values(data).some(v => v === '')) {
-        showNotification('All fields are required!');
+        notify('All fields are required!');
         return;
     }
 
     if (data.password !== data.repeatPass)
     {
-        showNotification('Passwords must be the same!');
+        notify('Passwords must be the same!');
         return;
     }
     await register(data.username, data.email, data.password,data.gender);

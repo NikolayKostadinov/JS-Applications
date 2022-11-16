@@ -1,7 +1,7 @@
 import {html} from "../../node_modules/lit-html/lit-html.js";
 import {login} from "../api/users.js";
 import {createSubmitHandler} from "../utils.js";
-import {showNotification} from "./notification.js";
+import {notify} from "../api/notification.js";
 
 const loginTemplate = (onSubmit) => html` 
     <section id="login">
@@ -27,7 +27,7 @@ export function loginPage(ctx){
 
 async function onSubmit(ctx, data, event) {
     if (Object.values(data).some(v => v === '')) {
-        showNotification('Email and password are required');
+        notify('Email and password are required');
         return;
     }
     await login(data.email, data.password);
