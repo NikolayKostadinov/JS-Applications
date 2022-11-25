@@ -21,12 +21,12 @@ export function getById(id) {
 
 }
 
-export function create(shoes) {
-    return api.post(endpoints.create, shoes);
+export function create(data) {
+    return api.post(endpoints.create, data);
 }
 
-export function update(id, shoes) {
-    return api.put(endpoints.update + id, shoes);
+export function update(id, data) {
+    return api.put(endpoints.update + id, data);
 }
 
 export function del(id) {

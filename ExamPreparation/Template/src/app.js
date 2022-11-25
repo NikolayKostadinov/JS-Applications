@@ -19,7 +19,8 @@ page.start();
 document.getElementById('logout')
     .addEventListener('click', onLogout);
 
-function onLogout() {
+function onLogout(ev) {
+	ev.preventDefault();
     logout();
     page.redirect('/');
 }
