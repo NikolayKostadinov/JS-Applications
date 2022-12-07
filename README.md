@@ -8,3 +8,5 @@
 * Работа с нерелационни бази данни
 * Работа с REST API и асинхронно програмиране
 * Тестване на апликацията
+
+![Certificate](https://github.com/NikolayKostadinov/JS-Applications/blob/main/Certificate/JS%20Applications%20-%20October%202022%20-%20Certificate.jpeg)
