@@ -18,3 +18,4 @@ git branch -u origin/<BRANCH> <BRANCH>
   
 git remote set-head origin -a
 
+![Certificate](https://github.com/NikolayKostadinov/JS-Applications/blob/main/Certificate/JS%20Applications%20-%20October%202022%20-%20Certificate.jpeg) 
