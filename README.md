@@ -8,13 +8,3 @@
 * Работа с нерелационни бази данни
 * Работа с REST API и асинхронно програмиране
 * Тестване на апликацията
-
-
-git branch -m main <BRANCH>
-  
-git fetch origin
-  
-git branch -u origin/<BRANCH> <BRANCH>
-  
-git remote set-head origin -a
-
