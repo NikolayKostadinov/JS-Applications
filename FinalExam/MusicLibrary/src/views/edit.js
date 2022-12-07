@@ -3,26 +3,28 @@ import {notify} from "../api/notification.js";
 import * as albumsRepo from "../repos/dataRepo.js";
 import {createSubmitHandler} from "../utils.js";
 
-const createTemplate = (onSubmit) => html`
-    <section id="create">
+const editTemplate = (album, onSubmit) => html`
+    <section id="edit">
         <div class="form">
-            <h2>Add Album</h2>
-            <form class="create-form" @submit=${onSubmit}>
-                <input type="text" name="singer" id="album-singer" placeholder="Singer/Band" />
-                <input type="text" name="album" id="album-album" placeholder="Album" />
-                <input type="text" name="imageUrl" id="album-img" placeholder="Image url" />
-                <input type="text" name="release" id="album-release" placeholder="Release date" />
-                <input type="text" name="label" id="album-label" placeholder="Label" />
-                <input type="text" name="sales" id="album-sales" placeholder="Sales" />
+            <h2>Edit Album</h2>
+            <form class="edit-form" @submit=${onSubmit}>
+                <input type="text" name="singer" id="album-singer" placeholder="Singer/Band" .value=${album.singer}/>
+                <input type="text" name="album" id="album-album" placeholder="Album" .value=${album.album}/>
+                <input type="text" name="imageUrl" id="album-img" placeholder="Image url" .value=${album.imageUrl}/>
+                <input type="text" name="release" id="album-release" placeholder="Release date" .value=${album.release}/>
+                <input type="text" name="label" id="album-label" placeholder="Label" .value=${album.label}/>
+                <input type="text" name="sales" id="album-sales" placeholder="Sales" .value=${album.sales}/>
+
                 <button type="submit">post</button>
             </form>
         </div>
-    </section> 
+    </section>
+
 `;
 
-export function createView(ctx) {
+export function editView(ctx) {
     let handler = createSubmitHandler(ctx, onSubmit);
-    ctx.render(createTemplate(handler));
+    ctx.render(editTemplate(ctx.item,handler));
 }
 
 async function onSubmit(ctx, data, event) {
@@ -31,7 +33,7 @@ async function onSubmit(ctx, data, event) {
         return;
     }
 
-    await albumsRepo.create(data);
+    await albumsRepo.update(ctx.item._id, data);
     event.target.reset();
     ctx.page.redirect('/dashboard')
 }

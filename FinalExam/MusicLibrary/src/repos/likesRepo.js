@@ -1,30 +1,19 @@
 import * as api from "../api/api.js";
 
 const endpoints = {
-    getAll: '/data/albums?sortBy=_createdOn%20desc',
-    getById: '/data/albums/',
-    create: '/data/albums',
-    update: '/data/albums/',
-    delete: '/data/albums/',
+    create: '/data/likes',
+    likesCount: (albumId) => `/data/likes?where=albumId%3D%22${albumId}%22&distinct=_ownerId&count`,
+    likesPerUser: (albumId, userId) => `/data/likes?where=albumId%3D%22${albumId}%22%20and%20_ownerId%3D%22${userId}%22&count`,
 }
 
-export function getAll(search) {
-    return api.get(endpoints.getAll);
-}
-
-export function getById(id) {
-    return api.get(endpoints.getById + id);
-
-}
-
-export function create(data) {
+export function like(data) {
     return api.post(endpoints.create, data);
 }
 
-export function update(id, data) {
-    return api.put(endpoints.update + id, data);
+export function getLikes(albumId) {
+    return api.get(endpoints.likesCount(albumId));
 }
 
-export function del(id) {
-    return api.del(endpoints.delete + id);
+export function getLikesPerUser(albumId, userId) {
+    return api.get(endpoints.likesPerUser(albumId, userId));
 }

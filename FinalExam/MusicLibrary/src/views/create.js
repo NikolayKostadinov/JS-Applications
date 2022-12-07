@@ -1,26 +1,28 @@
 import {html} from "../../node_modules/lit-html/lit-html.js";
 import {notify} from "../api/notification.js";
-import {register} from "../api/users.js";
+import * as albumsRepo from "../repos/dataRepo.js";
 import {createSubmitHandler} from "../utils.js";
 
-const registerTemplate = (onSubmit) => html`
-    <section id="register">
+const createTemplate = (onSubmit) => html`
+    <section id="create">
         <div class="form">
-            <h2>Register</h2>
-            <form class="login-form" @submit = ${onSubmit}>
-                <input type="text" name="email" id="register-email" placeholder="email" />
-                <input type="password" name="password" id="register-password" placeholder="password" />
-                <input type="password" name="re-password" id="repeat-password" placeholder="repeat password" />
-                <button type="submit">register</button>
-                <p class="message">Already registered? <a href="#">Login</a></p>
+            <h2>Add Album</h2>
+            <form class="create-form" @submit=${onSubmit}>
+                <input type="text" name="singer" id="album-singer" placeholder="Singer/Band" />
+                <input type="text" name="album" id="album-album" placeholder="Album" />
+                <input type="text" name="imageUrl" id="album-img" placeholder="Image url" />
+                <input type="text" name="release" id="album-release" placeholder="Release date" />
+                <input type="text" name="label" id="album-label" placeholder="Label" />
+                <input type="text" name="sales" id="album-sales" placeholder="Sales" />
+                <button type="submit">post</button>
             </form>
         </div>
-    </section>
+    </section> 
 `;
 
-export function registerView(ctx) {
+export function createView(ctx) {
     let handler = createSubmitHandler(ctx, onSubmit);
-    ctx.render(registerTemplate(handler));
+    ctx.render(createTemplate(handler));
 }
 
 async function onSubmit(ctx, data, event) {
@@ -29,11 +31,7 @@ async function onSubmit(ctx, data, event) {
         return;
     }
 
-    if (data.password !== data['re-password']) {
-        notify('Passwords must be the same!');
-        return;
-    }
-    await register(data.email, data.password);
+    await albumsRepo.create(data);
     event.target.reset();
     ctx.page.redirect('/dashboard')
 }

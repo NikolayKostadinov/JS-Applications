@@ -5,17 +5,18 @@ import {createSubmitHandler} from "../utils.js";
 
 const registerTemplate = (onSubmit) => html`
     <section id="register">
-        <div class="form" @submit = ${onSubmit}>
+        <div class="form">
             <h2>Register</h2>
-            <form class="login-form">
-                <input type="text" name="email" id="register-email" placeholder="email"/>
-                <input type="password" name="password" id="register-password" placeholder="password"/>
-                <input type="password" name="re-password" id="repeat-password" placeholder="repeat password"/>
-                <button type="submit">login</button>
+            <form class="login-form" @submit = ${onSubmit}>
+                <input type="text" name="email" id="register-email" placeholder="email" />
+                <input type="password" name="password" id="register-password" placeholder="password" />
+                <input type="password" name="re-password" id="repeat-password" placeholder="repeat password" />
+                <button type="submit">register</button>
                 <p class="message">Already registered? <a href="/login">Login</a></p>
             </form>
         </div>
-    </section>`;
+    </section>
+`;
 
 export function registerView(ctx) {
     let handler = createSubmitHandler(ctx, onSubmit);
@@ -34,5 +35,5 @@ async function onSubmit(ctx, data, event) {
     }
     await register(data.email, data.password);
     event.target.reset();
-    ctx.page.redirect('/')
+    ctx.page.redirect('/dashboard')
 }

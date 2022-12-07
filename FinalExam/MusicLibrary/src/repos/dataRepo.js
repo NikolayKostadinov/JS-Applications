@@ -1,18 +1,14 @@
 import * as api from "../api/api.js";
 
 const endpoints = {
-    getAll: '/data/shoes?sortBy=_createdOn%20desc',
-    getById: '/data/shoes/',
-    create: '/data/shoes',
-    update: '/data/shoes/',
-    delete: '/data/shoes/',
+    getAll: '/data/albums?sortBy=_createdOn%20desc',
+    getById: '/data/albums/',
+    create: '/data/albums',
+    update: '/data/albums/',
+    delete: '/data/albums/',
 }
 
 export function getAll(search) {
-    if (search) {
-        return api.get(`/data/shoes?where=brand%20LIKE%20%22${search}%22`)
-    }
-
     return api.get(endpoints.getAll);
 }
 

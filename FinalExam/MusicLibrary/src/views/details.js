@@ -1,34 +1,54 @@
-import {repeat} from "../../node_modules/lit-html/directives/repeat.js";
-import {html} from "../../node_modules/lit-html/lit-html.js";
+import {html, nothing} from "../../node_modules/lit-html/lit-html.js";
 import * as albumsRepo from "../repos/dataRepo.js";
+import * as likesRepo from "../repos/likesRepo.js";
 
-const albumTemplate = (album) => html`
-    <li class="card">
-        <img src=${album.imageUrl} alt="travis" />
-        <p>
-            <strong>Singer/Band: </strong><span class="singer">${album.singer}</span>
-        </p>
-        <p>
-            <strong>Album name: </strong><span class="album">${album.album}</span>
-        </p>
-        <p><strong>Sales:</strong><span class="sales">${album.sales}</span></p>
-        <a class="details-btn" href="/dashboard/${album._id}">Details</a>
-    </li>`;
+const detailsTemplate = (album, ctx, onDelete, onLike) => html`
+    <section id="details">
+        <div id="details-wrapper">
+            <p id="details-title">Album Details</p>
+            <div id="img-wrapper">
+                <img src=${album.imageUrl} alt="example1"/>
+            </div>
+            <div id="info-wrapper">
+                <p><strong>Band:</strong><span id="details-singer">${album.singer}</span></p>
+                <p>
+                    <strong>Album name:</strong><span id="details-album">${album.album}</span>
+                </p>
+                <p><strong>Release date:</strong><span id="details-release">${album.release}</span></p>
+                <p><strong>Label:</strong><span id="details-label">${album.label}</span></p>
+                <p><strong>Sales:</strong><span id="details-sales">${album.sales}</span></p>
+            </div>
+            <div id="likes">Likes: <span id="likes-count">${album.likesCount || 0}</span></div>
 
-const loginTemplate = (albums) => html`
-    <section id="dashboard">
-        <h2>Albums</h2>
-        <ul class="card-wrapper">
-            ${albums.length ? html`
-                        <ul class="card-wrapper">
-                            ${repeat(albums, a => a._id, albumTemplate)}
-                        </ul>`
-                    : html`<h2>There are no albums added yet.</h2>`}
+            <!--Edit and Delete are only for creator-->
+            ${ctx.isAuthenticated ?
+                    html`
+                        <div id="action-buttons">
+                            ${album._isOwner ? html`
+                                        <a href="/edit/${album._id}" id="edit-btn">Edit</a>
+                                        <a href="/delete/${album._id}" id="delete-btn" @click=${onDelete}>Delete</a>`
+                                    : html`
+                                        ${ctx.user.didLike ? nothing : html`<a href="/like/${album._id}" id="like-btn"
+                                                                               @click=${onLike}>Like</a>`}`}
+                        </div>` : nothing}
+        </div>
+        </div>
     </section>
-
 `;
 
-export async function dashboardView(ctx) {
-    let albums = await albumsRepo.getAll();
-    ctx.render(loginTemplate(albums));
+export async function detailsView(ctx) {
+    ctx.render(detailsTemplate(ctx.item, ctx, onDelete, onLike));
+
+    async function onDelete(ev) {
+        ev.preventDefault();
+        await albumsRepo.del(ctx.item._id);
+        ctx.page.redirect('/dashboard');
+    }
+
+    async function onLike(ev) {
+        ev.preventDefault();
+        const albumId = ctx.item._id;
+        await likesRepo.like({albumId});
+        ctx.page.redirect('/dashboard/' + albumId);
+    }
 }
